@@ -17,6 +17,8 @@ class Build : FalloutBuild
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
+    [Solution] readonly Solution Solution;
+
     Target Clean => _ => _
         .Before(Restore)
         .Executes(() =>
@@ -32,6 +34,7 @@ class Build : FalloutBuild
         .DependsOn(Restore)
         .Executes(() =>
         {
+            Solution.GetProject("repro").GetProperty("TargetFramework");
         });
 
 }
